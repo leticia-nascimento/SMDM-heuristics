@@ -14,15 +14,19 @@ class Graph:
         self.neighbours = {}
         self.weights = {}
         self.degrees = {}
+        self.degree_node_plus = {}
+        self.degree_node_minus = {}
 
-    def add_vertice(self, vertice_index, vertice_name):
-        if self.vertice_exists(vertice_index):
-            print("Error: Can't add ", vertice_index, "to vertices.")
+    def add_vertice(self, vertice, vertice_name):
+        if self.vertice_exists(vertice):
+            print("Error: Can't add ", vertice, "to vertices.")
             return 0
-        self.vertices.add(vertice_index)
-        self.vertices_names[vertice_index] = vertice_name
-        self.degrees[vertice_index] = 0
-        self.neighbours[vertice_index] = set()
+        self.vertices.add(vertice)
+        self.vertices_names[vertice] = vertice_name
+        self.degrees[vertice] = 0
+        self.degree_node_plus[vertice] = 0
+        self.degree_node_minus[vertice] = 0
+        self.neighbours[vertice] = set()
 
     def add_edges(self, edge, weight):
         if not self.is_edge_valid(edge):
@@ -34,6 +38,10 @@ class Graph:
             neighbour = edge[(index + 1) % 2]
             self.neighbours[vertice].add(neighbour)
             self.degrees[vertice] += 1
+            if float(weight) > 0.0:
+                self.degree_node_plus[vertice] += float(weight)
+            else:
+                self.degree_node_minus[vertice] += (float(weight) * -1.0)
 
     def is_edge_valid(self, edge):
         if len(edge) != 2:
@@ -56,6 +64,28 @@ class Graph:
     def num_edges(self):
         return len(self.edges)
 
+    # def get_edge(self, vertice_a, vertice_b):
+    #     for edge in self.edges:
+    #         if [vertice_a, vertice_b] == edge:
+    #             return edge
+    #     return None
+
+    # def get_adj(self, vertice_a, vertice_b):
+    #     if vertice_b not in self.neighbours[vertice_a]:
+    #         return 0
+    #     edge = self.get_edge(vertice_a, vertice_b)
+    #     return self.get_weight[edge]
+
+    def get_positive_degree(self, vertice):
+        if vertice not in self.degree_node_plus:
+            return 0
+        return self.degree_node_plus[vertice]
+
+    def get_negative_degree(self, vertice):
+        if vertice not in self.degree_node_minus:
+            return 0
+        return self.degree_node_minus[vertice]
+
     def get_degree(self, vertice):
         if not self.vertice_exists(vertice):
             print("Error: ", vertice, "doesn't exist.")
@@ -63,9 +93,12 @@ class Graph:
         return self.degrees[vertice]
 
     def get_weight(self, edge):
+        print("get_weight edge", edge)
+        print("self.edges", self.edges)
         if edge in self.edges:
+            print("get_weight self.weights[edge]", self.weights[edge])
             return self.weights[edge]
-        return float('inf')
+        return 0
 
     def get_neighbours(self, vertice):
         return self.neighbours[vertice]
