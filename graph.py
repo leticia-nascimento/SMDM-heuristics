@@ -93,10 +93,10 @@ class Graph:
         return self.degrees[vertice]
 
     def get_weight(self, edge):
-        print("get_weight edge", edge)
-        print("self.edges", self.edges)
+        # print("get_weight edge", edge)
+        # print("self.edges", self.edges)
         if edge in self.edges:
-            print("get_weight self.weights[edge]", self.weights[edge])
+            # print("get_weight self.weights[edge]", self.weights[edge])
             return self.weights[edge]
         return 0
 

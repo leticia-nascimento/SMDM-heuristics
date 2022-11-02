@@ -6,7 +6,7 @@ class Modularity:
     def calculateDensitySigned(self, solution, lbda):
         density = 0.0
         for community in solution.communities:
-            print("community", community)
+            # print("community", community)
             edgesPlus = 0.0
             edgesMinus = 0.0
             totalDegreePlus = 0.0
@@ -14,17 +14,17 @@ class Modularity:
             for vertice_index in range(len(community)):
                 # vértice da comunidade
                 vertice = str(community[vertice_index])
-                print("calculateDensitySigned vertice", vertice)
-                print("calculateDensitySigned vertice_index", vertice_index)
-                print("calculateDensitySigned range", range(len(community)))
-                print("totalDegreePlus", totalDegreePlus)
-                print("totalDegreeMinus", totalDegreeMinus)
-                print("edgesPlus", edgesPlus)
-                print("edgesMinus", edgesMinus)
+                # print("calculateDensitySigned vertice", vertice)
+                # print("calculateDensitySigned vertice_index", vertice_index)
+                # print("calculateDensitySigned range", range(len(community)))
+                # print("totalDegreePlus", totalDegreePlus)
+                # print("totalDegreeMinus", totalDegreeMinus)
+                # print("edgesPlus", edgesPlus)
+                # print("edgesMinus", edgesMinus)
                 totalDegreePlus += self.graph.get_positive_degree(vertice)
                 totalDegreeMinus += self.graph.get_negative_degree(vertice)
                 for next_vertice_index in range(vertice_index + 1, len(community)):
-                    print("next_vertice_index", next_vertice_index)
+                    # print("next_vertice_index", next_vertice_index)
                     # próximo vértice da comunidade
                     next_vertice = str(community[next_vertice_index])
                     # há adj positiva

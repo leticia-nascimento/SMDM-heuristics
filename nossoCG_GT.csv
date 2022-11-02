@@ -122,4 +122,4 @@ signed/parlamento.net;CGI;0.200000;0.143000;0.152000;26.800000;2;0.000000;0.0990
 signed/parlamento.net;CGI;0.800000;0.076000;0.081000;7.200000;2;0.000000;0.042000;1;3;11;0;4660790;3495206;57327985;0;[9],[6],[4],[1],[3],[0],[2],[5],[7],[8]
 signed/gahuku.net;CGI;0.200000;0.105000;0.119000;21.451429;2;0.000000;0.099000;1;3;4;0;11198426;779568;101468250;0;[0,1,14,15],[4,8,9,12,13],[2,3,5,6,7,10,11]
 signed/gahuku.net;CGI;0.800000;0.843000;0.859000;9.500000;2;0.008000;0.669000;1;6;14;0;14261875;20821305;712555614;0;[10],[14],[2,3,6,7],[15],[0],[1],[5],[11],[4],[8],[9],[12],[13]
-# instancia, versao do algoritmo, lambda, tempo em ms, tempo em ms, densidade, --- ultima coluna: comunidade
+# instancia, versao do algoritmo, lambda, tempo em ms, tempo em ms, densidade, --- ultima coluna: comunidade // somar 1

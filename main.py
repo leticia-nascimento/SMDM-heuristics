@@ -2,6 +2,7 @@ from graph import Graph
 from modularity import Modularity
 from solution import Solution
 import argparse
+import numpy
 
 
 def main():
@@ -23,21 +24,25 @@ def main():
     print(DATASET)
     graph.read_file(DATASET)
 
-    print('Edges: ', graph.edges)
-    print('Edges Size: ', graph.num_edges())
-    print('Vertices: ', graph.vertices)
-    print('Vertices Size: ', graph.num_vertices())
-    print('Degrees: ', graph.degrees)
-    print('Degree: ', graph.get_degree('1'))
+    # print('Edges: ', graph.edges)
+    # print('Edges Size: ', graph.num_edges())
+    # print('Vertices: ', graph.vertices)
+    # print('Vertices Size: ', graph.num_vertices())
+    # print('Degrees: ', graph.degrees)
 
     modularity = Modularity(graph)
     solution = Solution(graph)
 
-    # nossoHeuristics_GT
+    # parlamento.net / lambda = 0.200000 / density 26.800000
     solution.add_communities(
-        [[10], [14], [2, 3, 6, 7], [15], [0], [1],
-            [5], [11], [4], [8], [9], [12], [13]]
+        [[10], [1, 3, 6, 8, 9], [2, 4, 5, 7]]
     )
+
+    print(solution.edges)
+    print(solution.communities)
+    print(solution.communities)
+    print(solution.vertices_communities)
+    print(solution.weights)
 
     density = modularity.calculateDensitySigned(solution, LAMBDA)
     print('Density: ', density)
