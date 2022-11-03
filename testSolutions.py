@@ -3,6 +3,7 @@ print('Degree: ', graph.get_degree('1'))
 # solutions at nossoHeuristics_GT
 
 # gahuku.net / lambda = 0.5 / density 24.238095
+# python3 main.py graph 0.5 dataset/gahuku.net
 solution.add_communities(
     [[16], [5, 14], [3, 4, 6, 7, 8, 11, 12], [9, 10, 13], [1, 2], [15]]
 )
@@ -19,7 +20,9 @@ x = [list(com1), list(com2), list(com3), list(
     com4), list(com5), list(com6)]
 solution.add_communities(x)
 
+# signed/parlamento.net;CGI;0.200000;0.143000;0.152000;26.800000;2;0.000000;0.099000;1;10;4;0;7727942;4087460;111811546;0;[9],[0,2,5,7,8],[1,3,4,6]
 # parlamento.net / lambda = 0.200000 / density 26.800000
+# python3 main.py graph 0.2 dataset/parlamento.net
 solution.add_communities(
     [[10], [1, 3, 6, 8, 9], [2, 4, 5, 7]]
 )

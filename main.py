@@ -1,6 +1,7 @@
 from graph import Graph
 from modularity import Modularity
 from solution import Solution
+from local_search import LocalSearch
 import argparse
 import numpy
 
@@ -21,27 +22,41 @@ def main():
     DATASET = args.dataset
     LAMBDA = float(args.lbda)
     graph = Graph(ID)
-    print(DATASET)
     graph.read_file(DATASET)
 
-    print('Edges: ', graph.edges)
-    # print('Edges Size: ', graph.num_edges())
-    # print('Vertices: ', graph.vertices)
-    # print('Vertices Size: ', graph.num_vertices())
-    # print('Degrees: ', graph.degrees)
+    print('File: ', DATASET)
+    print('Identification: ', ID)
+    print('Lambda: ', LAMBDA)
+    print('----------------')
+    print('(G) Edges: ', graph.edges)
+    print('(G) Edges Size: ', graph.num_edges())
+    print('(G) Vertices: ', graph.vertices)
+    print('(G) Vertices Size: ', graph.num_vertices())
+    print('(G) Degrees: ', graph.degrees)
+    print('----------------')
 
     modularity = Modularity(graph)
     solution = Solution(graph)
 
+    # gakuhu 0.5
     solution.add_communities(
-    [[16], [5, 14], [3, 4, 6, 7, 8, 11, 12], [9, 10, 13], [1, 2], [15]]
+        [[16], [5, 14], [3, 4, 6, 7, 8, 11, 12], [9, 10, 13], [1, 2], [15]]
     )
 
-    print(solution.communities)
-    print(solution.vertices_communities)
+    # parlamento 0.8
+    # solution.add_communities(
+    #     [[10], [7], [5], [2], [4], [1], [3], [6], [8], [9]]
+    # )
 
-    density = modularity.calculateDensitySigned(solution, LAMBDA)
-    print('Density: ', density)
+    print('(S) Communities: ', solution.communities)
+    print('(S) Vertices by Communities: ', solution.vertices_communities)
+    density = modularity.calculate_density_signed(solution, LAMBDA)
+    print('(S) Density: ', density)
+
+    print('----------------')
+    localSearch = LocalSearch(graph, solution, LAMBDA)
+    search = localSearch.search()
+    print('(SL) Best density: ', search)
 
 
 if __name__ == "__main__":
