@@ -33,15 +33,9 @@ def main():
     modularity = Modularity(graph)
     solution = Solution(graph)
 
-    # parlamento.net / lambda = 0.200000 / density 26.800000
     solution.add_communities(
-        [[1,3,6,8,9],[10],[5],[7],[2,4]]
+    [[16], [5, 14], [3, 4, 6, 7, 8, 11, 12], [9, 10, 13], [1, 2], [15]]
     )
-
-    # gahuku.net
-    # solution.add_communities(
-    # [[16], [5, 14], [3, 4, 6, 7, 8, 11, 12], [9, 10, 13], [1, 2], [15]]
-    # )
 
     print(solution.communities)
     print(solution.vertices_communities)

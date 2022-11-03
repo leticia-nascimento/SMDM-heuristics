@@ -2,7 +2,7 @@ print('Degree: ', graph.get_degree('1'))
 
 # solutions at nossoHeuristics_GT
 
-# gahuku.net
+# gahuku.net / lambda = 0.5 / density 24.238095
 solution.add_communities(
     [[16], [5, 14], [3, 4, 6, 7, 8, 11, 12], [9, 10, 13], [1, 2], [15]]
 )
