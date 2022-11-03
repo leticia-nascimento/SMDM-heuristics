@@ -24,7 +24,7 @@ def main():
     print(DATASET)
     graph.read_file(DATASET)
 
-    # print('Edges: ', graph.edges)
+    print('Edges: ', graph.edges)
     # print('Edges Size: ', graph.num_edges())
     # print('Vertices: ', graph.vertices)
     # print('Vertices Size: ', graph.num_vertices())
@@ -35,14 +35,16 @@ def main():
 
     # parlamento.net / lambda = 0.200000 / density 26.800000
     solution.add_communities(
-        [[10], [1, 3, 6, 8, 9], [2, 4, 5, 7]]
+        [[1,3,6,8,9],[10],[5],[7],[2,4]]
     )
 
-    print(solution.edges)
-    print(solution.communities)
+    # gahuku.net
+    # solution.add_communities(
+    # [[16], [5, 14], [3, 4, 6, 7, 8, 11, 12], [9, 10, 13], [1, 2], [15]]
+    # )
+
     print(solution.communities)
     print(solution.vertices_communities)
-    print(solution.weights)
 
     density = modularity.calculateDensitySigned(solution, LAMBDA)
     print('Density: ', density)

@@ -21,19 +21,19 @@ class Modularity:
                 # print("totalDegreeMinus", totalDegreeMinus)
                 # print("edgesPlus", edgesPlus)
                 # print("edgesMinus", edgesMinus)
-                totalDegreePlus += self.graph.get_positive_degree(vertice)
-                totalDegreeMinus += self.graph.get_negative_degree(vertice)
+                totalDegreePlus += solution.get_positive_degree(vertice)
+                totalDegreeMinus += solution.get_negative_degree(vertice)
                 for next_vertice_index in range(vertice_index + 1, len(community)):
                     # print("next_vertice_index", next_vertice_index)
                     # próximo vértice da comunidade
                     next_vertice = str(community[next_vertice_index])
                     # há adj positiva
-                    if (self.graph.get_weight((vertice, next_vertice)) > 0.0):
-                        edgesPlus += self.graph.get_weight(
+                    if (solution.get_weight((vertice, next_vertice)) > 0.0):
+                        edgesPlus += solution.get_weight(
                             (vertice, next_vertice))
                     # ha adjacencia negativa
-                    if (self.graph.get_weight((vertice, next_vertice)) < 0.0):
-                        edgesMinus += self.graph.get_weight((vertice,
+                    if (solution.get_weight((vertice, next_vertice)) < 0.0):
+                        edgesMinus += solution.get_weight((vertice,
                                                             next_vertice)) * -1.0
                     # if next_vertice_index == len(community):
                     #     break

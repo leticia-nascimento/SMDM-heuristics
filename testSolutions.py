@@ -24,6 +24,11 @@ solution.add_communities(
     [[10], [1, 3, 6, 8, 9], [2, 4, 5, 7]]
 )
 
+# parlamento.net / lambda = 0.500000 / density 24.238095
+solution.add_communities(
+    [[1,3,6,8,9],[10],[5],[7],[2,4]]
+)
+
 1-(-1)-2
 1-(-1)-3
 1-(-1)-4
