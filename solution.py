@@ -32,6 +32,17 @@ class Solution:
             return 0
         return 0
 
+    # def add_vertice_to_community(self, vertice, community_index):
+    #     self.vertices_communities[vertice] = community_index
+
+    def get_community_index(self, vertice):
+        for community_index, community in enumerate(self.communities):
+            print("AQUI", community_index)
+            print("AQUI 2", community)
+            if vertice in community:
+                return community_index
+        return None
+
     def set_values(self):
         for vertice in self.graph.vertices:
             vertice_as_string = str(vertice)
@@ -40,8 +51,9 @@ class Solution:
                 if float(weight) > 0.0:
                     self.degree_node_plus[vertice_as_string] += float(weight)
                 else:
-                    self.degree_node_minus[vertice_as_string] += (float(weight) * -1.0)
-    
+                    self.degree_node_minus[vertice_as_string] += (
+                        float(weight) * -1.0)
+
     def get_neighbours(self, vertice):
         neighbours = []
         for neighbour in self.graph.get_neighbours(vertice):

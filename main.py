@@ -2,6 +2,7 @@ from graph import Graph
 from modularity import Modularity
 from solution import Solution
 from local_search import LocalSearch
+from find_solutions import FindSolutions
 import argparse
 import numpy
 
@@ -54,9 +55,14 @@ def main():
     print('(S) Density: ', density)
 
     print('----------------')
-    localSearch = LocalSearch(graph, solution, LAMBDA)
-    search = localSearch.search()
+    local_search = LocalSearch(graph, solution, LAMBDA)
+    search = local_search.search()
     print('(SL) Best density: ', search)
+
+    print('----------------')
+    find_solutions = FindSolutions(graph, LAMBDA)
+    solutions = find_solutions.find()
+    print('(SL) Solutions found: ', solutions)
 
 
 if __name__ == "__main__":

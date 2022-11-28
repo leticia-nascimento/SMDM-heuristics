@@ -14,14 +14,13 @@ class Modularity:
                 vertice = str(community[vertice_index])
                 totalDegreePlus += self.graph.get_positive_degree(vertice)
                 totalDegreeMinus += self.graph.get_negative_degree(vertice)
-
                 for neighbour in self.graph.get_neighbours(vertice):
                     if (solution.get_weight((vertice, neighbour)) > 0.0):
                         edgesPlus += solution.get_weight(
                             (vertice, neighbour))
                     if (solution.get_weight((vertice, neighbour)) < 0.0):
                         edgesMinus += solution.get_weight((vertice,
-                                                            neighbour)) * -1.0
+                                                           neighbour)) * -1.0
             nnodes = len(community)
             if (nnodes > 0.0):
                 density += (4.0 * lbda * edgesPlus - (2 - 2 * lbda) * (totalDegreePlus - 2 * edgesPlus)
