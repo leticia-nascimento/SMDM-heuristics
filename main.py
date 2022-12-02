@@ -40,6 +40,11 @@ def main():
     solution = Solution(graph)
 
     # gakuhu 0.5
+    # solution.add_communities(
+    #     [[16], [5, 14], [3, 4, 6, 7, 8, 11, 12], [9, 10, 13], [1, 2], [15]]
+    # )
+
+        # gakuhu 0.5
     solution.add_communities(
         [[16], [5, 14], [3, 4, 6, 7, 8, 11, 12], [9, 10, 13], [1, 2], [15]]
     )
@@ -54,15 +59,15 @@ def main():
     density = modularity.calculate_density_signed(solution, LAMBDA)
     print('(S) Density: ', density)
 
-    print('----------------')
-    local_search = LocalSearch(graph, solution, LAMBDA)
-    search = local_search.search()
-    print('(SL) Best density: ', search)
+    # print('----------------')
+    # local_search = LocalSearch(graph, solution, LAMBDA)
+    # search = local_search.search()
+    # print('(SL) Best density: ', search)
 
     print('----------------')
     find_solutions = FindSolutions(graph, LAMBDA)
     solutions = find_solutions.find()
-    print('(SL) Solutions found: ', solutions)
+    print('(SL) Solution found: ', solutions)
 
 
 if __name__ == "__main__":

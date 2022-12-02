@@ -37,8 +37,9 @@ class Solution:
 
     def get_community_index(self, vertice):
         for community_index, community in enumerate(self.communities):
-            print("AQUI", community_index)
-            print("AQUI 2", community)
+            # print("AQUI 0 self.communities", self.communities)
+            # print("AQUI 1 community_index", community_index)
+            # print("AQUI 2 community", community)
             if vertice in community:
                 return community_index
         return None
