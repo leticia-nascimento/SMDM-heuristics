@@ -3,7 +3,7 @@ from modularity import Modularity
 from copy import deepcopy
 
 # Obter a solução ótima local S'
-# fazer um shuffle dos vertices e cortar pra fazer uma solução aleatoria
+# Fazer um shuffle dos vertices e cortar pra fazer uma solução aleatoria
 
 
 class LocalSearch:
@@ -11,50 +11,63 @@ class LocalSearch:
         self.graph = graph
         self.LAMBDA = LAMBDA
         self.solution = solution
-        self.new_solution = deepcopy(solution)  # conjunto de comunidades
         self.modularity = Modularity(graph)
+        self.best_neighbour = deepcopy(solution)
 
-    # Primeiramente criando soluções locais pra comparar com S
-    def search(self):
-        # s = [[1, 2, 3], [4, 5], [6]]
-        # s1 = [[1, 2, 3, 4], [5], [6]]
-        # s2 = [[1, 2, 3, 5], [4], [6]]
-        # s4 = [[1, 2, 3, 6], [4, 5]]
+    # Para a melhor solução, encontrar uma lista de todos os vizinhos possíveis até encontrar
+    # alguém melhor
+    def find_best_neighbour(self):
+        print("(LS) Finding best neighbour for current best neighbour: ", self.best_neighbour.communities)
+        temp_solution = deepcopy(self.best_neighbour)
 
-        # s = [[2, 3], [1, 4, 5], [6]]
-        # s1 = [[2, 3, 4], [4, 5], [1, 6]]
-        # s2 = [[1, 2, 3, 5], [4], [6]]
-        # s4 = [[1, 2, 3, 6], [4, 5]]
-        print("(LS) START New solution communities: ",
-              self.new_solution.communities)
-        for community_index, community in enumerate(self.solution.communities):
+        for community_index, community in enumerate(self.best_neighbour.communities):
             for vertice_index in range(len(community)):
-                self.new_solution = deepcopy(self.solution)
-                print("(LS) New solution communities:",
-                      self.new_solution.communities)
-                # pegar os vertices das comunidades e criar novas
+                temp_solution = deepcopy(self.best_neighbour)
+
+                # Vertice info
                 vertice = community[vertice_index]
-                stringVertice = str(vertice)
-                for next_community in range(community_index + 1, len(self.solution.communities)):
-                    self.new_solution.communities[next_community].append(
-                        vertice)
-                    self.new_solution.vertices_communities[stringVertice] = next_community
-                    self.new_solution.communities[next_community - 1].remove(
-                        vertice)
-                    print("(LS) New solution vertice communities:",
-                          self.new_solution.vertices_communities)
-                    print("(LS) New solution communities:",
-                          self.new_solution.communities)
-                    # if self.new_solution.communities[community_index] == []:
-                    #     self.new_solution.communities.remove(community)
-                    # print(" new_solution.communities 4",
-                    #   self.new_solution.communities)
-                    density = self.modularity.calculate_density_signed(
-                        self.new_solution, self.LAMBDA)
-                    print("(LS) New density", density)
-                    if (self.solution.density < density):
-                        print("(LS) Best solution found", self.new_solution.communities,
-                              "Density: ", self.new_solution.density)
-                        return density
-        print("(LS) Already has the best solution", self.solution.density)
-        return 0
+                string_vertice = str(vertice)
+                vertice_community = community_index
+                print("(LS) DEBUG vertice: ", vertice)
+
+                for next_community_index, next_community in enumerate(self.best_neighbour.communities):
+                    # Remove da comunidade antiga
+                    temp_solution.communities[vertice_community].remove(vertice)
+
+                    # Adiciona na comunidade nova
+                    temp_solution.communities[next_community_index].append(vertice)
+                    temp_solution.vertices_communities[string_vertice] = next_community_index
+                    vertice_community = next_community_index
+
+                    print("(LS) DEBUG temp_solution.communities: ", temp_solution.communities)
+                    print("(LS) DEBUG temp_solution.vertices_communities: ", temp_solution.vertices_communities)
+
+                    # Calcula nova densidade
+                    temp_density = self.modularity.calculate_density_signed(temp_solution, self.LAMBDA)
+                    print("(LS) DEBUG temp_density: ", temp_density)
+
+                    if (temp_density > self.best_neighbour.density):
+                       print("(LS) New best density found: ", self.best_neighbour.communities)
+                       self.best_neighbour = deepcopy(self.solution)
+                       return self.best_neighbour
+
+        print("(LS) Best neighbour not found. Keeping solution: ", self.best_neighbour.communities)
+        return self.best_neighbour
+
+    def search(self):
+        print("(LS) START Find best neighbour for: ", self.solution.communities)
+
+        # 1.	solucaoVizinha = copy(solucao_inicial)
+        # 2.	faça{
+        # 3.	.	solucao        = copy(solucaoVizinha)
+        # 4.	.	solucaoVizinha = melhorVizinho(solucao)
+        # 5.	}enquanto mod(solucaoVizinha) melhor que mod(solucao);
+        # 6.	return solucao
+
+        while (self.find_best_neighbour().density > self.solution.density):
+            self.find_best_neighbour()
+
+        print("(LS) Final solution: ",
+            "\n - Communities: ", self.best_neighbour.communities,
+            "\n - Density: ", self.best_neighbour.density)
+        return self.best_neighbour

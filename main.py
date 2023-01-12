@@ -34,40 +34,34 @@ def main():
     print('(G) Vertices: ', graph.vertices)
     print('(G) Vertices Size: ', graph.num_vertices())
     print('(G) Degrees: ', graph.degrees)
-    print('----------------')
 
     modularity = Modularity(graph)
     solution = Solution(graph)
 
-    # gakuhu 0.5
-    # solution.add_communities(
-    #     [[16], [5, 14], [3, 4, 6, 7, 8, 11, 12], [9, 10, 13], [1, 2], [15]]
-    # )
-
-        # gakuhu 0.5
+    # DEBUG gakuhu 0.5
     solution.add_communities(
         [[16], [5, 14], [3, 4, 6, 7, 8, 11, 12], [9, 10, 13], [1, 2], [15]]
     )
 
-    # parlamento 0.8
+    # DEBUG parlamento 0.8
     # solution.add_communities(
     #     [[10], [7], [5], [2], [4], [1], [3], [6], [8], [9]]
     # )
 
+    print('----------------')
     print('(S) Communities: ', solution.communities)
     print('(S) Vertices by Communities: ', solution.vertices_communities)
     density = modularity.calculate_density_signed(solution, LAMBDA)
     print('(S) Density: ', density)
 
-    # print('----------------')
-    # local_search = LocalSearch(graph, solution, LAMBDA)
-    # search = local_search.search()
-    # print('(SL) Best density: ', search)
-
     print('----------------')
-    find_solutions = FindSolutions(graph, LAMBDA)
-    solutions = find_solutions.find()
-    print('(SL) Solution found: ', solutions)
+    local_search = LocalSearch(graph, solution, LAMBDA)
+    best_neighbour = local_search.search()
+
+    # print('----------------')
+    # find_solutions = FindSolutions(graph, LAMBDA)
+    # solutions = find_solutions.find()
+    # print('(SL) Solution found: ', solutions)
 
 
 if __name__ == "__main__":
