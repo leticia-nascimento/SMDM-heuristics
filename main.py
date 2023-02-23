@@ -1,6 +1,7 @@
 from graph import Graph
 from modularity import Modularity
 from solution import Solution
+from grasp import Grasp
 from local_search import LocalSearch
 from find_solutions import FindSolutions
 import argparse
@@ -39,29 +40,35 @@ def main():
     solution = Solution(graph)
 
     # DEBUG gakuhu 0.5
-    solution.add_communities(
-        [[16], [5, 14], [3, 4, 6, 7, 8, 11, 12], [9, 10, 13], [1, 2], [15]]
-    )
+    # solution.add_communities(
+    #     [[16], [5, 14], [3, 4, 6, 7, 8, 11, 12], [9, 10, 13], [1, 2], [15]]
+    # )
 
     # DEBUG parlamento 0.8
     # solution.add_communities(
     #     [[10], [7], [5], [2], [4], [1], [3], [6], [8], [9]]
     # )
 
-    print('----------------')
-    print('(S) Communities: ', solution.communities)
-    print('(S) Vertices by Communities: ', solution.vertices_communities)
-    density = modularity.calculate_density_signed(solution, LAMBDA)
-    print('(S) Density: ', density)
+    # print('----------------')
+    # print('(S) Communities: ', solution.communities)
+    # print('(S) Vertices by Communities: ', solution.vertices_communities)
+    # density = modularity.calculate_density_signed(solution, LAMBDA)
+    # print('(S) Density: ', density)
 
-    print('----------------')
-    local_search = LocalSearch(graph, solution, LAMBDA)
-    best_neighbour = local_search.search()
+    # print('----------------')
+    # local_search = LocalSearch(graph, solution, LAMBDA)
+    # best_neighbour = local_search.search()
 
     # print('----------------')
     # find_solutions = FindSolutions(graph, LAMBDA)
-    # solutions = find_solutions.find()
-    # print('(SL) Solution found: ', solutions)
+    # found_solution = find_solutions.find()
+    # print('(SL) Solution found: ', found_solution.density)
+
+    print('----------------')
+    grasp = Grasp(graph, LAMBDA, 30)
+    solution = grasp.find_solution()
+    print('(GR) Solution found: ', solution.communities)
+    print('(GR) Solution found density: ', solution.density)
 
 
 if __name__ == "__main__":

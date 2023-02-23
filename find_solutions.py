@@ -1,6 +1,7 @@
 from solution import Solution
 from modularity import Modularity
 from copy import deepcopy
+import random
 
 
 class FindSolutions:
@@ -12,12 +13,16 @@ class FindSolutions:
 
         self.new_solution = deepcopy(self.solution)
         self.temp_solution = deepcopy(self.solution)
+    
+    def my_shuffle(self, array):
+        random.shuffle(array)
+        return array
 
     def find(self):
         print("(FS) START Finding solutions for all vertices")
         # TODO aqui deve ser aleatorio. talvez só randomizar a lista de vertices pra garantir
-        # random_vertices =
-        for vertice in self.graph.vertices:
+        random_vertices = self.my_shuffle(list(self.graph.vertices))
+        for vertice in random_vertices:
             # print("--------------------SOLO-------------------")
             # print("(FS) Finding new solution for vertice", vertice)
             string_vertice = str(vertice)
@@ -86,7 +91,7 @@ class FindSolutions:
                     current_best_community = community_index
                     self.solution = deepcopy(self.temp_solution)
                 # else:
-                #     print("(FS) Solo density was better", current_best_density, "Continuing...")
+                #     print("(FS) Previous density was better", current_best_density, "Continuing...")
             # print("--------------------")
             # print("(FS) Current communities: ", self.solution.communities)
             # print("(FS) Current best density for: ", vertice, "is", solo_density)
@@ -97,4 +102,4 @@ class FindSolutions:
             self.solution, self.LAMBDA)
         print("Solution density: ", final_density)
         print("Solution communities: ", self.solution.communities)
-        return self.solution.communities
+        return self.solution

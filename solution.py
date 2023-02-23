@@ -2,7 +2,7 @@ class Solution:
     def __init__(self, graph):
         self.graph = graph
         self.communities = []
-        self.density = 0
+        self.density = float("-inf")
         self.vertices_communities = {}
         self.counted_edges = []
         for vertice in graph.vertices:

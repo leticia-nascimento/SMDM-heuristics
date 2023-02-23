@@ -28,7 +28,7 @@ class LocalSearch:
                 vertice = community[vertice_index]
                 string_vertice = str(vertice)
                 vertice_community = community_index
-                print("(LS) DEBUG vertice: ", vertice)
+                # print("(LS) DEBUG vertice: ", vertice)
 
                 for next_community_index, next_community in enumerate(self.best_neighbour.communities):
                     # Remove da comunidade antiga
@@ -39,13 +39,14 @@ class LocalSearch:
                     temp_solution.vertices_communities[string_vertice] = next_community_index
                     vertice_community = next_community_index
 
-                    print("(LS) DEBUG temp_solution.communities: ", temp_solution.communities)
-                    print("(LS) DEBUG temp_solution.vertices_communities: ", temp_solution.vertices_communities)
+                    # print("(LS) DEBUG temp_solution.communities: ", temp_solution.communities)
+                    # print("(LS) DEBUG temp_solution.vertices_communities: ", temp_solution.vertices_communities)
 
                     # Calcula nova densidade
                     temp_density = self.modularity.calculate_density_signed(temp_solution, self.LAMBDA)
-                    print("(LS) DEBUG temp_density: ", temp_density)
+                    # print("(LS) DEBUG temp_density: ", temp_density)
 
+                    # Caso encontre um vizinho melhor, retorna o mesmo
                     if (temp_density > self.best_neighbour.density):
                        print("(LS) New best density found: ", self.best_neighbour.communities)
                        self.best_neighbour = deepcopy(self.solution)
