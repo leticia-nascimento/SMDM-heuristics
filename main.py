@@ -6,6 +6,7 @@ from local_search import LocalSearch
 from find_solutions import FindSolutions
 import argparse
 import numpy
+import time
 
 
 def main():
@@ -25,10 +26,11 @@ def main():
     LAMBDA = float(args.lbda)
     graph = Graph(ID)
     graph.read_file(DATASET)
+    start_time = time.time()
 
-    print('File: ', DATASET)
-    print('Identification: ', ID)
-    print('Lambda: ', LAMBDA)
+    print('(Config) File: ', DATASET)
+    print('(Config) Identification: ', ID)
+    print('(Config) Lambda: ', LAMBDA)
     print('----------------')
     print('(G) Edges: ', graph.edges)
     print('(G) Edges Size: ', graph.num_edges())
@@ -65,10 +67,14 @@ def main():
     # print('(SL) Solution found: ', found_solution.density)
 
     print('----------------')
-    grasp = Grasp(graph, LAMBDA, 30)
+    grasp = Grasp(graph, LAMBDA, 5)
     solution = grasp.find_solution()
     print('(GR) Solution found: ', solution.communities)
     print('(GR) Solution found density: ', solution.density)
+
+    print('----------------')
+    print("(Execution) Execution time:")
+    print("%s seconds" % (time.time() - start_time))
 
 
 if __name__ == "__main__":
