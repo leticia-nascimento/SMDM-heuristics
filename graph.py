@@ -11,7 +11,7 @@ class Graph:
         self.vertices = set()
         self.vertices_names = {}
         self.edges = []
-        self.neighbours = {}
+        self.neighbors = {}
         self.weights = {}
         self.degrees = {}
         self.degree_node_plus = {}
@@ -26,7 +26,7 @@ class Graph:
         self.degrees[vertice] = 0
         self.degree_node_plus[vertice] = 0
         self.degree_node_minus[vertice] = 0
-        self.neighbours[vertice] = set()
+        self.neighbors[vertice] = set()
 
     def add_edges(self, edge, weight):
         if not self.is_edge_valid(edge):
@@ -35,8 +35,8 @@ class Graph:
         self.edges.append(edge)
         self.weights[edge] = float(weight)
         for index, vertice in enumerate(edge):
-            neighbour = edge[(index + 1) % 2]
-            self.neighbours[vertice].add(neighbour)
+            neighbors = edge[(index + 1) % 2]
+            self.neighbors[vertice].add(neighbors)
             self.degrees[vertice] += 1
             if float(weight) > 0.0:
                 self.degree_node_plus[vertice] += float(weight)
@@ -71,7 +71,7 @@ class Graph:
     #     return None
 
     # def get_adj(self, vertice_a, vertice_b):
-    #     if vertice_b not in self.neighbours[vertice_a]:
+    #     if vertice_b not in self.neighbors[vertice_a]:
     #         return 0
     #     edge = self.get_edge(vertice_a, vertice_b)
     #     return self.get_weight[edge]
@@ -97,8 +97,8 @@ class Graph:
             return self.weights[edge]
         return 0
 
-    def get_neighbours(self, vertice):
-        return self.neighbours[vertice]
+    def get_neighbors(self, vertice):
+        return self.neighbors[vertice]
 
     def read_file(self, file_name):
         import re

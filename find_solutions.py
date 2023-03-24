@@ -5,9 +5,10 @@ import random
 
 
 class FindSolutions:
-    def __init__(self, graph, LAMBDA):
+    def __init__(self, graph, LAMBDA, DEBUG):
         self.graph = graph
         self.LAMBDA = LAMBDA
+        self.DEBUG = DEBUG
         self.solution = Solution(graph)
         self.modularity = Modularity(graph)
 
@@ -19,8 +20,7 @@ class FindSolutions:
         return array
 
     def find(self):
-        print("(FS) START Finding solutions for all vertices")
-        # TODO aqui deve ser aleatorio. talvez só randomizar a lista de vertices pra garantir
+        if self.DEBUG: print("(FS) START Finding solutions for all vertices")
         random_vertices = self.my_shuffle(list(self.graph.vertices))
         for vertice in random_vertices:
             # print("--------------------SOLO-------------------")
@@ -48,7 +48,7 @@ class FindSolutions:
 
             self.new_solution = deepcopy(self.solution)
             for community_index, community in enumerate(self.new_solution.communities):
-                # print("--------------------GROUPING-------------------")
+                # print("--------------------GROUPING--------------yh-----")
                 # print("(FS) Trying new communities for vertice", vertice, "at community", community_index)
                 self.temp_solution = deepcopy(self.new_solution)
 
@@ -97,9 +97,10 @@ class FindSolutions:
             # print("(FS) Current best density for: ", vertice, "is", solo_density)
             # print("(FS) Current best community for: ", vertice, "is", solo_community_index)
             # print("(FS) Current vertices communities relation: ", self.solution.vertices_communities)
-        print("--------------------")
+        # print("--------------------")
         final_density = self.modularity.calculate_density_signed(
             self.solution, self.LAMBDA)
-        print("Solution density: ", final_density)
-        print("Solution communities: ", self.solution.communities)
+
+        if self.DEBUG: print("Solution density: ", final_density)
+        if self.DEBUG: print("Solution communities: ", self.solution.communities)
         return self.solution

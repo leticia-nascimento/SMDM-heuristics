@@ -7,22 +7,23 @@ from copy import deepcopy
 
 
 class LocalSearch:
-    def __init__(self, graph, solution, LAMBDA):
+    def __init__(self, graph, solution, LAMBDA, DEBUG):
         self.graph = graph
         self.LAMBDA = LAMBDA
+        self.DEBUG = DEBUG
         self.solution = solution
         self.modularity = Modularity(graph)
-        self.best_neighbour = deepcopy(solution)
+        self.best_neighbor = deepcopy(solution)
 
     # Para a melhor solução, encontrar uma lista de todos os vizinhos possíveis até encontrar
     # alguém melhor
-    def find_best_neighbour(self):
-        print("(LS) Finding best neighbour for current best neighbour: ", self.best_neighbour.communities)
-        temp_solution = deepcopy(self.best_neighbour)
+    def find_best_neighbor(self):
+        if self.DEBUG: print("(LS) Finding best neighbor for current best neighbor: ", self.best_neighbor.communities)
+        temp_solution = deepcopy(self.best_neighbor)
 
-        for community_index, community in enumerate(self.best_neighbour.communities):
+        for community_index, community in enumerate(self.best_neighbor.communities):
             for vertice_index in range(len(community)):
-                temp_solution = deepcopy(self.best_neighbour)
+                temp_solution = deepcopy(self.best_neighbor)
 
                 # Vertice info
                 vertice = community[vertice_index]
@@ -30,7 +31,7 @@ class LocalSearch:
                 vertice_community = community_index
                 # print("(LS) DEBUG vertice: ", vertice)
 
-                for next_community_index, next_community in enumerate(self.best_neighbour.communities):
+                for next_community_index, next_community in enumerate(self.best_neighbor.communities):
                     # Remove da comunidade antiga
                     temp_solution.communities[vertice_community].remove(vertice)
 
@@ -47,16 +48,16 @@ class LocalSearch:
                     # print("(LS) DEBUG temp_density: ", temp_density)
 
                     # Caso encontre um vizinho melhor, retorna o mesmo
-                    if (temp_density > self.best_neighbour.density):
-                       print("(LS) New best density found: ", self.best_neighbour.communities)
-                       self.best_neighbour = deepcopy(self.solution)
-                       return self.best_neighbour
+                    if (temp_density > self.best_neighbor.density):
+                       if self.DEBUG: print("(LS) New best density found: ", self.best_neighbor.communities)
+                       self.best_neighbor = deepcopy(self.solution)
+                       return self.best_neighbor
 
-        print("(LS) Best neighbour not found. Keeping solution: ", self.best_neighbour.communities)
-        return self.best_neighbour
+        if self.DEBUG: print("(LS) Best neighbor not found. Keeping solution: ", self.best_neighbor.communities)
+        return self.best_neighbor
 
     def search(self):
-        print("(LS) START Find best neighbour for: ", self.solution.communities)
+        if self.DEBUG: print("(LS) START Find best neighbor for: ", self.solution.communities)
 
         # 1.	solucaoVizinha = copy(solucao_inicial)
         # 2.	faça{
@@ -65,10 +66,10 @@ class LocalSearch:
         # 5.	}enquanto mod(solucaoVizinha) melhor que mod(solucao);
         # 6.	return solucao
 
-        while (self.find_best_neighbour().density > self.solution.density):
-            self.find_best_neighbour()
+        while (self.find_best_neighbor().density > self.solution.density):
+            self.find_best_neighbor()
 
-        print("(LS) Final solution: ",
-            "\n - Communities: ", self.best_neighbour.communities,
-            "\n - Density: ", self.best_neighbour.density)
-        return self.best_neighbour
+        if self.DEBUG: print("(LS) Final solution: ",
+            "\n - Communities: ", self.best_neighbor.communities,
+            "\n - Density: ", self.best_neighbor.density)
+        return self.best_neighbor

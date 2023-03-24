@@ -6,26 +6,26 @@ from copy import deepcopy
 
 
 class Grasp:
-    def __init__(self, graph, LAMBDA, m):
+    def __init__(self, graph, LAMBDA, M, DEBUG):
         self.graph = graph
         self.LAMBDA = LAMBDA
+        self.M = M
+        self.DEBUG = DEBUG
         self.best_solution = Solution(graph)
         self.modularity = Modularity(graph)
-        self.m = m # quantidade de soluções que serão criadas
 
     def find_solution(self):
-        print("(Grasp) START Finding best solution")
+        print("(Grasp) START Finding best solution... this may take a while.")
+        for index in range(self.M):
+            if self.DEBUG: print("--------------------")
+            if self.DEBUG: print("GR: Solution", index)
 
-        for index in range(self.m):
-            print("DEBUG: loop numero", index)
-            find_solutions = FindSolutions(self.graph, self.LAMBDA)
+            find_solutions = FindSolutions(self.graph, self.LAMBDA, self.DEBUG)
             first_solution = find_solutions.find()
 
-            local_search = LocalSearch(self.graph, first_solution, self.LAMBDA)
+            local_search = LocalSearch(self.graph, first_solution, self.LAMBDA, self.DEBUG)
             second_solution = local_search.search()
 
-            print("DEBUG: best_solution", self.best_solution.density)
-            print("DEBUG: second_solution", second_solution.density)
             if (self.best_solution.density < second_solution.density):
                 self.best_solution = deepcopy(second_solution)
 

@@ -47,20 +47,20 @@ class Solution:
     def set_values(self):
         for vertice in self.graph.vertices:
             vertice_as_string = str(vertice)
-            for neighbour in self.graph.neighbours[vertice]:
-                weight = self.get_weight((vertice_as_string, neighbour))
+            for neighbor in self.graph.neighbors[vertice]:
+                weight = self.get_weight((vertice_as_string, neighbor))
                 if float(weight) > 0.0:
                     self.degree_node_plus[vertice_as_string] += float(weight)
                 else:
                     self.degree_node_minus[vertice_as_string] += (
                         float(weight) * -1.0)
 
-    def get_neighbours(self, vertice):
-        neighbours = []
-        for neighbour in self.graph.get_neighbours(vertice):
-            if self.is_same_community(vertice, neighbour):
-                neighbours.append(neighbour)
-        return neighbours
+    def get_neighbors(self, vertice):
+        neighbors = []
+        for neighbor in self.graph.get_neighbors(vertice):
+            if self.is_same_community(vertice, neighbor):
+                neighbors.append(neighbor)
+        return neighbors
 
     def is_same_community(self, vertice1, vertice2):
         return self.vertices_communities[vertice1] == self.vertices_communities[vertice2]
