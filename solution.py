@@ -5,28 +5,28 @@ class Solution:
         self.density = float("-inf")
         self.vertices_communities = {}
         self.counted_edges = []
-        for vertice in graph.vertices:
-            self.vertices_communities[vertice] = None
+        for vertex in graph.vertices:
+            self.vertices_communities[vertex] = None
         self.degree_node_plus = {}
         self.degree_node_minus = {}
 
-    def get_positive_degree(self, vertice):
-        if str(vertice) not in self.degree_node_plus:
+    def get_positive_degree(self, vertex):
+        if str(vertex) not in self.degree_node_plus:
             return 0
-        return self.degree_node_plus[vertice]
+        return self.degree_node_plus[vertex]
 
-    def get_negative_degree(self, vertice):
-        if str(vertice) not in self.degree_node_minus:
+    def get_negative_degree(self, vertex):
+        if str(vertex) not in self.degree_node_minus:
             return 0
-        return self.degree_node_minus[vertice]
+        return self.degree_node_minus[vertex]
 
     def get_weight(self, edge):
-        vertice1 = str(edge[0])
-        vertice2 = str(edge[1])
+        vertex1 = str(edge[0])
+        vertex2 = str(edge[1])
         # TODO Verificar
         # if vertice2 < vertice1:
         #     edge = (vertice2, vertice1)
-        if (self.is_same_community(vertice1, vertice2)):
+        if (self.is_same_community(vertex1, vertex2)):
             if edge in self.graph.edges:
                 return self.graph.get_weight(edge)
             return 0

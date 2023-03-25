@@ -1,4 +1,3 @@
-
 class Modularity:
     def __init__(self, graph):
         self.graph = graph
@@ -10,16 +9,16 @@ class Modularity:
             edgesMinus = 0.0
             totalDegreePlus = 0.0
             totalDegreeMinus = 0.0
-            for vertice_index in range(len(community)):
-                vertice = str(community[vertice_index])
-                totalDegreePlus += self.graph.get_positive_degree(vertice)
-                totalDegreeMinus += self.graph.get_negative_degree(vertice)
-                for neighbor in self.graph.get_neighbors(vertice):
-                    if (solution.get_weight((vertice, neighbor)) > 0.0):
+            for vertex_index in range(len(community)):
+                vertex = str(community[vertex_index])
+                totalDegreePlus += self.graph.get_positive_degree(vertex)
+                totalDegreeMinus += self.graph.get_negative_degree(vertex)
+                for neighbor in self.graph.get_neighbors(vertex):
+                    if (solution.get_weight((vertex, neighbor)) > 0.0):
                         edgesPlus += solution.get_weight(
-                            (vertice, neighbor))
-                    if (solution.get_weight((vertice, neighbor)) < 0.0):
-                        edgesMinus += solution.get_weight((vertice,
+                            (vertex, neighbor))
+                    if (solution.get_weight((vertex, neighbor)) < 0.0):
+                        edgesMinus += solution.get_weight((vertex,
                                                            neighbor)) * -1.0
             nnodes = len(community)
             if (nnodes > 0.0):
