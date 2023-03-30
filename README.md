@@ -16,7 +16,17 @@ Where:
 
 ✨ **dataset/file.net** is the data file (.net)
 
-✨ **-d** is an optional argument to enter DEBUG mode, which is more verbose.
+✨ **-v** is an optional argument to enter VERBOSE mode
+
+✨ **-d** is an optional argument to enter DEBUG mode
+
+✨ **-l** is an optional argument to enter Debug Local Search mode
+
+✨ **-f** is an optional argument to enter Debug Find Solutions mode
+
+✨ **-lo** is an optional argument to run and debug only Local Search
+
+✨ **-fo** is an optional argument to run and debug only Find Solutions
 
 Example:
 

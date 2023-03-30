@@ -20,7 +20,7 @@ class Grasp:
         print("(Grasp) START Finding best solution... this may take a while.")
         for index in range(self.M):
             if self.VERBOSE: print("--------------------")
-            if self.VERBOSE: print("GR: Solution", index)
+            if self.VERBOSE: print("GR: Solution", index + 1)
 
             find_solutions = FindSolutions(self.graph, self.LAMBDA, self.VERBOSE, self.DEBUG_FIND_SOLUTIONS)
             first_solution = find_solutions.find()

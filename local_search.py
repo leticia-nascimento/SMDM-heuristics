@@ -61,7 +61,7 @@ class LocalSearch:
         # 3.	.	solucao        = copy(solucaoVizinha)
         # 4.	.	solucaoVizinha = melhorVizinho(solucao)
         # 5.	}enquanto mod(solucaoVizinha) melhor que mod(solucao);
-        # 6.	return solucao
+        # 6.	return solucaoy),
 
         while (self.find_best_neighbor().density > self.solution.density):
             self.find_best_neighbor()
