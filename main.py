@@ -149,17 +149,18 @@ def main():
         return 0    
 
     if not PARALLEL:
-        repeat = 2 # number of executions per config
+        repeat = 30 # number of executions per config
         columns = ["file_name","vertices","edges","m","lambda","density","time_ms", "time_s"]
         lambds = [0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9] # lambda values to test for a file and M
 
         with open(ID + ".csv", 'w', newline='') as file:
             writer = csv.writer(file)
             writer.writerow(columns)
-            for i in range(repeat):
-                for lambd in lambds:
+            for lambd in lambds:
+                for i in range(repeat):
+                # for lambd in lambds:
                     print('----------------')
-                    grasp = Grasp(graph, LAMBDA, M, VERBOSE, DEBUG_FIND_SOLUTIONS, DEBUG_LOCAL_SEARCH)
+                    grasp = Grasp(graph, lambd, M, VERBOSE, DEBUG_FIND_SOLUTIONS, DEBUG_LOCAL_SEARCH)
                     solution = grasp.find_solution()
                     print("--------------------")
                     print('(GR) Solution found: ', solution.communities)

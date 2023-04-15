@@ -28,6 +28,8 @@ Where:
 
 ✨ **-fo** is an optional argument to run and debug only Find Solutions
 
+✨ **-p** is an optional argument to run on parallel mode
+
 Example:
 
 ```shell
