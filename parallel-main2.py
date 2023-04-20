@@ -5,13 +5,18 @@ from grasp import Grasp
 from local_search import LocalSearch
 from find_solutions import FindSolutions
 import argparse
-import os
+import numpy
 import time
 import csv
 
 from subprocess import call
 import pdb
-from multiprocessing import Pool, cpu_count, Lock
+from multiprocessing import Pool, cpu_count, Process
+
+
+import threading
+
+lock = threading.Lock()
 
 #detect how many processes will run at the same time
 try:
@@ -19,7 +24,9 @@ try:
 except NotImplementedError:
     workers = 1
 
-lock = Lock()
+#initialize pool of processes
+processes = []
+
 
 def print_execution_time(start_time):
     print('----------------')
@@ -52,27 +59,26 @@ def debug_local_search(graph, solution, LAMBDA):
     best_neighbor = local_search.search()
     print('(LS) Best local: ', best_neighbor.density)
 
-# [0]graph, [1]lambd, [2]M, [3]VERBOSE, [4]DEBUG_FIND_SOLUTIONS, [5]DEBUG_LOCAL_SEARCH, [6]start_time, [7]DATASET, [8]num_vertices, [9]num_edges]
+# [0]graph, [1]lambd, [2]M, [3]VERBOSE, [4]DEBUG_FIND_SOLUTIONS, [5]DEBUG_LOCAL_SEARCH, [6]start_time, [7]DATASET, [8]num_vertices, [9]num_edges], [10] begin, [11] end
 def execute_grasp(args):
     print(args)
-    with open(args[10], 'a', newline='') as file:
-        writer = csv.writer(file)
+    with lock:
+        with open("testeee.csv", 'a', newline='') as file:
+            writer = csv.writer(file)
 
-        print('----------------')
-        grasp = Grasp(args[0], args[1], args[2], args[3], args[4], args[5])
-        solution = grasp.find_solution()
-        print("--------------------")
-        print('(GR) Solution found: ', solution.communities)
-        print('(GR) Solution found density: ', solution.density)
+            print('----------------')
+            grasp = Grasp(args[0], args[1], args[2], args[3], args[4], args[5])
+            solution = grasp.find_solution()
+            print("--------------------")
+            print('(GR) Solution found: ', solution.communities)
+            print('(GR) Solution found density: ', solution.density)
 
-        end_time = time.perf_counter()
-        execution_time = end_time - args[6]
-        execution_time_in_ms = execution_time * 1000
-        lock.acquire()
-        pid = os.getpid()
-        writer.writerow([args[7], args[8], args[9], args[2], args[1], solution.density, execution_time_in_ms, execution_time, pid])
-        lock.release()
-        return solution
+            end_time = time.perf_counter()
+            execution_time = end_time - args[6]
+            execution_time_in_ms = execution_time * 1000
+            
+            writer.writerow([args[7], args[8], args[9], args[2], args[1], solution.density, execution_time_in_ms, execution_time])
+
 
 def main():
     text = "Example: \n\
@@ -173,26 +179,34 @@ def main():
             
     else:
         repeat = 2 # number of executions per config
-        columns = ["file_name","vertices","edges","m","lambda","density","time_ms", "time_s", "process_id"]
+        columns = ["file_name","vertices","edges","m","lambda","density","time_ms", "time_s"]
         lambds = [0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9] # lambda values to test for a file and M
-        lines = 1 + (len(lambds) * repeat)
-        print ("Total lines", lines)
-        filename = ID + ".csv"
 
-        #initialize pool of processes
-        processes = []
+        # lines = 1 + (len(lambds) * repeat)
+        # print ("Total lines", lines)
+        chunk_size = repeat // workers
 
-        with open(filename, 'w', newline='') as file:
+        with open("teste.csv", 'w', newline='') as file:
             writer = csv.writer(file)
             writer.writerow(columns)
-
-        for i in range(repeat):
+        
+        processes = []
+        for i in range(workers):
             for lambd in lambds:
-                processes.append([graph, lambd, M, VERBOSE, DEBUG_FIND_SOLUTIONS, DEBUG_LOCAL_SEARCH, start_time, DATASET, graph.num_vertices(), graph.num_edges(), filename])
-                # 0 ID[0]graph, [1]lambd, [2]M, [3]VERBOSE, [4]DEBUG_FIND_SOLUTIONS, [5]DEBUG_LOCAL_SEARCH, [6]start_time, [7]DATASET, [8]num_vertices, [9]num_edges]
+                begin = i * chunk_size
+                end = begin + chunk_size - 1
+                # , begin*lines, (end+1)*lines-1
+                args = [graph, lambd, M, VERBOSE, DEBUG_FIND_SOLUTIONS, DEBUG_LOCAL_SEARCH, start_time, DATASET, graph.num_vertices(), graph.num_edges()]
+                p = Process(target=execute_grasp, args=([args]))
+                processes.append(p)
+                p.start()
+
+
+
+        # processes.append([graph, lambd, M, VERBOSE, DEBUG_FIND_SOLUTIONS, DEBUG_LOCAL_SEARCH, start_time, DATASET, graph.num_vertices(), graph.num_edges()])
+        # [0]graph, [1]lambd, [2]M, [3]VERBOSE, [4]DEBUG_FIND_SOLUTIONS, [5]DEBUG_LOCAL_SEARCH, [6]start_time, [7]DATASET, [8]num_vertices, [9]num_edges]
 
         print ("Total processes:{}".format(len(processes)),processes)
-        print ("Workers: ", workers)
         # call the processes
         pool = Pool(processes=workers)
         result = pool.map(execute_grasp, processes)
