@@ -76,7 +76,7 @@ def execute_grasp(args):
 
 def main():
     text = "Example: \n\
-                main.py identification 0.5 10 datasets/rudson.net"
+                main.py identification 0.5 10 datasets/rudson.net 30"
 
     parser = argparse.ArgumentParser(
         description=text, formatter_class=argparse.RawTextHelpFormatter)
@@ -87,6 +87,7 @@ def main():
     parser.add_argument(
         "m", help="quantity of solutions as integer")
     parser.add_argument("dataset", help="set input data")
+    parser.add_argument("r", help="set qty of execution")
     parser.add_argument(
         "-v", help="verbose mode", action='store_true')
     parser.add_argument(
@@ -99,6 +100,7 @@ def main():
         "-lo", help="debug local search mode", action='store_true')
     parser.add_argument(
         "-fo", help="debug find solution mode", action='store_true')
+        
     parser.add_argument(
         "-p", help="parallel execution mode", action='store_true')
 
@@ -108,6 +110,7 @@ def main():
     DATASET = args.dataset
     LAMBDA = float(args.lbda)
     M = int(args.m)
+    R = int(args.r)
     VERBOSE = args.v
     DEBUG = args.d
     DEBUG_FIND_SOLUTIONS = args.f or DEBUG
@@ -122,6 +125,7 @@ def main():
     print('(Config) Identification: ', ID)
     print('(Config) Lambda: ', LAMBDA)
     print('(Config) M: ', M)
+    print('(Config) Repeat: ', R)
     print('(Config) Verbose mode: ', VERBOSE)
     print('(Config) Debug mode: ', DEBUG)
     print('(Config) Debug find solutions: ', DEBUG_FIND_SOLUTIONS)
@@ -148,7 +152,6 @@ def main():
         return 0    
 
     if not PARALLEL:
-        repeat = 30 # number of executions per config
         columns = ["file_name","vertices","edges","m","lambda","density","time_ms", "time_s"]
         lambds = [0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9] # lambda values to test for a file and M
 
@@ -156,7 +159,7 @@ def main():
             writer = csv.writer(file)
             writer.writerow(columns)
             for lambd in lambds:
-                for i in range(repeat):
+                for i in range(R): # number of executions per config
                 # for lambd in lambds:
                     print('----------------')
                     grasp = Grasp(graph, lambd, M, VERBOSE, DEBUG_FIND_SOLUTIONS, DEBUG_LOCAL_SEARCH)
@@ -172,12 +175,12 @@ def main():
         print_execution_time(start_time)
             
     else:
-        repeat = 2 # number of executions per config
         columns = ["file_name","vertices","edges","m","lambda","density","time_ms", "time_s", "process_id"]
         lambds = [0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9] # lambda values to test for a file and M
-        lines = 1 + (len(lambds) * repeat)
+
+        lines = 1 + (len(lambds) * R)
         print ("Total lines", lines)
-        filename = ID + ".csv"
+        filename = ID + "-parallel.csv"
 
         #initialize pool of processes
         processes = []
@@ -186,7 +189,7 @@ def main():
             writer = csv.writer(file)
             writer.writerow(columns)
 
-        for i in range(repeat):
+        for i in range(R): # number of executions per config
             for lambd in lambds:
                 processes.append([graph, lambd, M, VERBOSE, DEBUG_FIND_SOLUTIONS, DEBUG_LOCAL_SEARCH, start_time, DATASET, graph.num_vertices(), graph.num_edges(), filename])
                 # 0 ID[0]graph, [1]lambd, [2]M, [3]VERBOSE, [4]DEBUG_FIND_SOLUTIONS, [5]DEBUG_LOCAL_SEARCH, [6]start_time, [7]DATASET, [8]num_vertices, [9]num_edges]
