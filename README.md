@@ -10,6 +10,8 @@ Where:
 
 ✨ **id** is the identifier of the execution (string)
 
+<!-- [lbda] Disabled. At this moment, the execution will be configured for a specific set of lambda [0.1 to 0.9] -->
+
 ✨ **lbda** is the lambda value (float)
 
 ✨ **m** is the quantity of solutions to be created (int)
